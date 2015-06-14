@@ -10,7 +10,7 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 
 import java.io.FileOutputStream;
 import java.util.Map;
-import static com.hewei.spider.contants.Messages.*;
+import static com.hewei.spider.constants.Messages.*;
 /**
  * 
  * @author hewei

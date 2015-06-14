@@ -12,9 +12,6 @@ public class IpClass {
 
 	private int port;
 
-	public IpClass() {
-	}
-
 	public String getIp() {
 		return ip;
 	}

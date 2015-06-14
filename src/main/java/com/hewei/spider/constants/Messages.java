@@ -1,4 +1,4 @@
-package com.hewei.spider.contants;
+package com.hewei.spider.constants;
 /**
  * 
  * @author hewei

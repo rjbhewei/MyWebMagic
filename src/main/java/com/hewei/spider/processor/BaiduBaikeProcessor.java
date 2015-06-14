@@ -1,12 +1,11 @@
 package com.hewei.spider.processor;
 
+import com.hewei.spider.constants.SpiderConstants;
 import com.hewei.spider.pipeline.StoragePipeline;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -15,7 +14,7 @@ import us.codecraft.webmagic.scheduler.RedisScheduler;
 
 import java.util.List;
 
-import static com.hewei.spider.contants.Messages.*;
+import static com.hewei.spider.constants.Messages.*;
 
 /**
  * @author hewei
@@ -135,9 +134,7 @@ public class BaiduBaikeProcessor implements PageProcessor {
 		page.putField(name, n.replaceAll(middot, ".").trim());
 	}
 
-	public static final JedisPool pool = new JedisPool(new JedisPoolConfig(), "172.18.2.35", 7009);
-
-	public static final RedisScheduler redisScheduler = new RedisScheduler(pool);
+	public static final RedisScheduler redisScheduler = new RedisScheduler(SpiderConstants.pool);
 
 	public static void start(){
 		Spider spider = Spider.create(new BaiduBaikeProcessor());

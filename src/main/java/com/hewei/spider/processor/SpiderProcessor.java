@@ -1,13 +1,12 @@
 package com.hewei.spider.processor;
 
+import com.hewei.spider.constants.SpiderConstants;
 import com.hewei.spider.pipeline.EmptyPipeline;
 import com.hewei.spider.pojos.IpClass;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mvel2.MVEL;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -28,11 +27,9 @@ public class SpiderProcessor implements PageProcessor {
 
 	private static final Site site = Site.me().enableHttpProxyPool().setSleepTime(1000).setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
 
-	private static final Pattern p1 = Pattern.compile("<td>([0-9]*.[0-9]*.[0-9]*.[0-9]*)</td>");
+	private static final Pattern ipPattern = Pattern.compile("<td>([0-9]*.[0-9]*.[0-9]*.[0-9]*)</td>");
 
-	private static final Pattern p2 = Pattern.compile("<td><script>document.write\\((.*)\\);</script></td>");
-
-	private static JedisPool pool = new JedisPool(new JedisPoolConfig(), "172.18.2.35", 7009);
+	private static final Pattern portPattern = Pattern.compile("<td><script>document.write\\((.*)\\);</script></td>");
 
 	private static final String PROXY_KEY = "proxy";
 
@@ -44,46 +41,55 @@ public class SpiderProcessor implements PageProcessor {
 		Map<String, String> map = HtmlUtils.eval(scriptForCalculate);
 
 		List<String> list = page.getHtml().xpath("//tr").all();
+
 		out:
 		for (String s : list) {
+
 			if (StringUtils.isEmpty(s)) {
 				continue;
 			}
+
 			IpClass ipClass = new IpClass();
-			Matcher m = p1.matcher(s);
+
+			Matcher m = ipPattern.matcher(s);
+
 			while (m.find()) {
-				String ip = m.group(1).trim();
-				if (StringUtils.isEmpty(ip)) {
-					continue out;
-				}
-				ipClass.setIp(ip);
+				ipClass.setIp(m.group(1).trim());
 			}
 
-			m = p2.matcher(s);
+			if (StringUtils.isEmpty(ipClass.getIp())) {
+				continue;
+			}
+
+
+			m = portPattern.matcher(s);
+
 			while (m.find()) {
+
 				String port = m.group(1).trim();
+
 				if (StringUtils.isEmpty(port)) {
 					continue out;
 				}
+
 				for (String key : map.keySet()) {
 					if (!port.contains(key)) {
-
 						continue;
 					}
 					port = String.valueOf(MVEL.eval(port.replace(key, map.get(key))));
 					break;
 				}
+
 				ipClass.setPort(Integer.parseInt(port));
-				if (StringUtils.isEmpty(ipClass.getIp())) {
-					continue out;
-				}
+
 				String key = ipClass.getIp() + ":" + ipClass.getPort();
 
-				Jedis jedis = pool.getResource();
+				Jedis jedis = SpiderConstants.pool.getResource();
+
 				try {
 					jedis.sadd(PROXY_KEY, key);
 				} finally {
-					pool.returnResource(jedis);
+					SpiderConstants.pool.returnResource(jedis);
 				}
 
 			}
@@ -98,9 +104,8 @@ public class SpiderProcessor implements PageProcessor {
 		return site;
 	}
 
-
 	public static void start() {
-		Spider.create(new SpiderProcessor()).addUrl("http://pachong.org/").setScheduler(new RedisScheduler(pool)).addPipeline(new EmptyPipeline()).run();
+		Spider.create(new SpiderProcessor()).addUrl("http://pachong.org/").setScheduler(new RedisScheduler(SpiderConstants.pool)).addPipeline(new EmptyPipeline()).run();
 	}
 
 	public static void scan() {
@@ -111,12 +116,12 @@ public class SpiderProcessor implements PageProcessor {
 				e.printStackTrace();
 			}
 
-			Jedis jedis = pool.getResource();
+			Jedis jedis = SpiderConstants.pool.getResource();
 			Set<String> set = new HashSet<>();
 			try {
 				set = jedis.smembers(PROXY_KEY);
 			} finally {
-				pool.returnResource(jedis);
+				SpiderConstants.pool.returnResource(jedis);
 			}
 
 			if (set.isEmpty()) {
