@@ -4,6 +4,11 @@ import org.apache.commons.lang.StringUtils;
 import org.htmlparser.Parser;
 import org.htmlparser.beans.StringBean;
 import org.htmlparser.util.ParserException;
+import org.mvel2.MVEL;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -39,6 +44,40 @@ public class HtmlUtils {
 		}
 
 		return str;
+	}
+
+	public static Map<String, String> eval(String str) {
+		String[] xx = str.split(";");
+
+		Map<String, String> map = new HashMap<>();
+		for (String x : xx) {
+			String[] tmp = x.replace("var", "").trim().split("=");
+			map.put(tmp[0], tmp[1]);
+		}
+		Set<String> keys = map.keySet();
+		while (true) {
+			int index = 0;
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				int loop = 0;
+				for (String key : keys) {
+					if (!entry.getValue().contains(key)) {
+						loop++;
+						continue;
+					}
+					entry.setValue(entry.getValue().replace(key, "(" + map.get(key) + ")"));
+				}
+				if (loop == keys.size()) {
+					index++;
+				}
+			}
+			if (index == keys.size()) {
+				break;
+			}
+		}
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			entry.setValue(String.valueOf(MVEL.eval(entry.getValue())));
+		}
+		return map;
 	}
 
 }
