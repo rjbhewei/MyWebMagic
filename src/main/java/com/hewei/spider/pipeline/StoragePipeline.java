@@ -45,7 +45,7 @@ public class StoragePipeline implements Pipeline {
 		//            logger.info(data.getExperience());
 
 		try {
-			FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\colin.he\\Desktop\\111.txt", true);
+			FileOutputStream fileOutputStream = new FileOutputStream("d:\\111.txt", true);
 			fileOutputStream.write((data.getName() + "\r\n").getBytes("UTF-8"));
 			fileOutputStream.close();
 		} catch (Exception e) {
