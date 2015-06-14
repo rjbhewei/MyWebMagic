@@ -120,7 +120,9 @@ public class SpiderProcessor implements PageProcessor {
 			}
 
 			Jedis jedis = SpiderConstants.pool.getResource();
+
 			Set<String> set = new HashSet<>();
+
 			try {
 				set = jedis.smembers(PROXY_KEY);
 			} finally {
@@ -132,12 +134,16 @@ public class SpiderProcessor implements PageProcessor {
 			}
 
 			List<String> list = new ArrayList<>(set);
+
 			if (!list.isEmpty()) {
+
 				String[][] httpProxyList = new String[list.size()][2];
+
 				for (int i = 0; i < list.size(); i++) {
 					String[] tmp = list.get(i).split(":");
 					httpProxyList[i] = new String[]{tmp[0], tmp[1]};
 				}
+
 				site.getHttpProxyPool().addProxy(httpProxyList);
 			}
 

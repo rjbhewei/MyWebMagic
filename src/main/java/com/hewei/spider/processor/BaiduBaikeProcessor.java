@@ -153,4 +153,8 @@ public class BaiduBaikeProcessor implements PageProcessor {
 		//        Spider.create(new BaiduBaikeSpider()).addUrl("http://baike.baidu.com/subview/8125411/8784937.htm").addPipeline(new StoragePipeline()).run();//不存在的页面
 	}
 
+	public static void addProxy(){
+
+	}
+
 }
