@@ -1,6 +1,5 @@
 package com.hewei.spider.processor;
 
-import com.hewei.spider.constants.SpiderConstants;
 import com.hewei.spider.pipeline.StoragePipeline;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
@@ -10,7 +9,6 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.scheduler.RedisScheduler;
 
 import java.util.List;
 
@@ -134,17 +132,14 @@ public class BaiduBaikeProcessor implements PageProcessor {
 		page.putField(name, n.replaceAll(middot, ".").trim());
 	}
 
-	public static final RedisScheduler redisScheduler = new RedisScheduler(SpiderConstants.pool);
-
-	public static void start(){
+	public static void start() {
 		Spider spider = Spider.create(new BaiduBaikeProcessor());
 		spider.addUrl("http://baike.baidu.com/view/1758.htm");
-		//		spider.setScheduler(redisScheduler);
+		//		spider.setScheduler(new RedisScheduler(SpiderConstants.pool));
 		spider.addPipeline(new StoragePipeline());
 		spider.setExitWhenComplete(false);
 		spider.thread(1);
 		spider.run();
-		//		Spider.create(new BaiduBaikeProcessor()).addUrl("http://baike.baidu.com/view/1758.htm").setScheduler(redisScheduler).addPipeline(new StoragePipeline()).setExitWhenComplete(false).thread(1).run();//刘德华
 	}
 
 	public static void otherStart() {

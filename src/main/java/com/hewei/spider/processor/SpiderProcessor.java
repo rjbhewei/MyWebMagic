@@ -11,7 +11,6 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.scheduler.RedisScheduler;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -105,7 +104,11 @@ public class SpiderProcessor implements PageProcessor {
 	}
 
 	public static void start() {
-		Spider.create(new SpiderProcessor()).addUrl("http://pachong.org/").setScheduler(new RedisScheduler(SpiderConstants.pool)).addPipeline(new EmptyPipeline()).run();
+		Spider spider = Spider.create(new SpiderProcessor());
+		spider.addUrl("http://pachong.org/");
+		//		spider.setScheduler(new RedisScheduler(SpiderConstants.pool));
+		spider.addPipeline(new EmptyPipeline());
+		spider.run();
 	}
 
 	public static void scan() {
