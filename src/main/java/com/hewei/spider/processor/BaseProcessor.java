@@ -25,7 +25,12 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public abstract class BaseProcessor implements PageProcessor {
+
     public static void addProxy(final Site site) {
+        addProxy(site, 10, 10);
+    }
+
+    public static void addProxy(final Site site, final long initialDelay, final long delay) {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
 
             @Override
@@ -59,6 +64,6 @@ public abstract class BaseProcessor implements PageProcessor {
                     site.getHttpProxyPool().addProxy(httpProxyList);
                 }
             }
-        }, 10, 10, TimeUnit.SECONDS);
+        }, initialDelay, delay, TimeUnit.SECONDS);
     }
 }
