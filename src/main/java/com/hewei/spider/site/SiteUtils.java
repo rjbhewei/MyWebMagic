@@ -30,7 +30,7 @@ public class SiteUtils {
         Site site = Site.me();
         site.setSleepTime(100);
         site.setCycleRetryTimes(1000);
-        site.setTimeOut(500);
+        site.setTimeOut(10000);//10秒
         site.setUserAgent(USERAGENT);
         if (useProxy) {
             loadProxy(site);

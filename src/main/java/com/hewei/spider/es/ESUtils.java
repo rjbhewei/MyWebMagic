@@ -23,7 +23,6 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.highlight.HighlightField;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -176,18 +175,18 @@ public class ESUtils {
     public static void main(String[] args) {
         try (Client client = ESUtils.getClient()) {
             dropIndex(client);
-            ESUtils.createIndex(client);
-            ESUtils.createMapping(client);
-            StorageData data = new StorageData();
-            data.setId(1L);
-            data.setCreateTime(new Date());
-            data.setUrl("www.baidu.com");
-            data.setName("贺伟");
-            data.setDesc("贺伟来打酱油的");
-            data.setExperience("贺伟专业来数云打酱油的");
-            data.setOriginalHtml("<div>贺伟就是来哈哈哈打酱油的,怎么滴</div>");
-            data.setSearchText("贺伟啊");
-            add(client, data);
+//            ESUtils.createIndex(client);
+//            ESUtils.createMapping(client);
+//            StorageData data = new StorageData();
+//            data.setId(1L);
+//            data.setCreateTime(new Date());
+//            data.setUrl("www.baidu.com");
+//            data.setName("贺伟");
+//            data.setDesc("贺伟来打酱油的");
+//            data.setExperience("贺伟专业来数云打酱油的");
+//            data.setOriginalHtml("<div>贺伟就是来哈哈哈打酱油的,怎么滴</div>");
+//            data.setSearchText("贺伟啊");
+//            add(client, data);
 //            search(client, "name", "贺伟");
 //            dropIndex(client);
         }

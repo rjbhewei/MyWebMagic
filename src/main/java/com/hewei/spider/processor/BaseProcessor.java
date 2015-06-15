@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseProcessor implements PageProcessor {
 
     public static void addProxy(final Site site) {
-        addProxy(site, 1, 1);
+        addProxy(site, 10, 10);
     }
 
     public static void addProxy(final Site site, final long initialDelay, final long delay) {

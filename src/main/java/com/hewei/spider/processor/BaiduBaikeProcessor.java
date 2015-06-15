@@ -3,7 +3,7 @@ package com.hewei.spider.processor;
 import com.hewei.spider.constants.SpiderConstants;
 import com.hewei.spider.es.ESUtils;
 import com.hewei.spider.jdbc.DataSourceUtils;
-import com.hewei.spider.pipeline.StoragePipeline;
+import com.hewei.spider.pipeline.EsPipeline;
 import com.hewei.spider.scheduler.JedisScheduler;
 import com.hewei.spider.site.SiteUtils;
 import com.hewei.spider.utils.HtmlUtils;
@@ -160,13 +160,25 @@ public class BaiduBaikeProcessor extends BaseProcessor {
             ESUtils.createMapping(client);
         }
         Spider spider = Spider.create(new BaiduBaikeProcessor(true));
-        spider.addUrl("http://baike.baidu.com/view/1758.htm");
+        spider.addUrl(originalUrl());
         spider.setScheduler(new JedisScheduler(SpiderConstants.pool));
-        spider.addPipeline(new StoragePipeline());
+        spider.addPipeline(new EsPipeline());
         spider.setExitWhenComplete(false);
-        spider.thread(100);
+        spider.thread(50);
         spider.run();
         addProxy(spider.getSite());
+    }
+
+    private static String[] originalUrl(){
+        return new String[]{
+                "http://baike.baidu.com/view/1758.htm",
+                "http://baike.baidu.com/subview/2375/2375.htm",
+                "http://baike.baidu.com/subview/18696/6054611.htm",
+                "http://baike.baidu.com/view/1674619.htm",
+                "http://baike.baidu.com/subview/3064/3064.htm",
+                "http://baike.baidu.com/subview/2075/11117599.htm",
+                "http://baike.baidu.com/subview/16360/5414449.htm",
+        };
     }
 
 	public static void otherStart() {
