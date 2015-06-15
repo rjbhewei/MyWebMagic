@@ -1,6 +1,7 @@
 package com.hewei.spider.processor;
 
 import com.hewei.spider.constants.SpiderConstants;
+import com.hewei.spider.es.ESUtils;
 import com.hewei.spider.jdbc.DataSourceUtils;
 import com.hewei.spider.pipeline.StoragePipeline;
 import com.hewei.spider.scheduler.JedisScheduler;
@@ -8,6 +9,7 @@ import com.hewei.spider.site.SiteUtils;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
+import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
@@ -153,6 +155,10 @@ public class BaiduBaikeProcessor extends BaseProcessor {
 
     public static void start() {
         DataSourceUtils.createTable();
+        try (Client client = ESUtils.getClient()) {
+            ESUtils.createIndex(client);
+            ESUtils.createMapping(client);
+        }
         Spider spider = Spider.create(new BaiduBaikeProcessor(true));
         spider.addUrl("http://baike.baidu.com/view/1758.htm");
         spider.setScheduler(new JedisScheduler(SpiderConstants.pool));

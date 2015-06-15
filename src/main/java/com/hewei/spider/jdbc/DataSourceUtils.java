@@ -3,10 +3,7 @@ package com.hewei.spider.jdbc;
 import com.alibaba.druid.pool.DruidDataSource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.concurrent.TimeUnit;
+import java.sql.*;
 
 /**
  * 
@@ -69,16 +66,13 @@ public class DataSourceUtils {
     }
 
     public static void main(String[] args) {
-//        createTable();
-//        for(int i=0;i<1;i++){
-//            insertData(new Star("hha"+i,"hha"+i));
-//        }
-
-        long s = System.nanoTime();
-        long s2 = s + TimeUnit.NANOSECONDS.convert(1500, TimeUnit.MILLISECONDS);
-
-        System.out.println(s+"--"+s2);
-
+        createTable();
+        for (int i = 0; i < 1; i++) {
+            Star star = new Star("hha" + i, "hha" + i);
+            star.setCreateTime(new java.util.Date());
+            insertData(star);
+            System.out.println(star.getId());
+        }
     }
 
     public static void createTable(){
@@ -88,6 +82,7 @@ public class DataSourceUtils {
                         "  `id` bigint(20) NOT NULL AUTO_INCREMENT,\n" +
                         "  `name` varchar(100) NOT NULL,\n" +
                         "  `url` varchar(255) NOT NULL,\n" +
+                        " `create_time` datetime DEFAULT NULL,\n" +
                         "  PRIMARY KEY (`id`)\n" +
                         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
                 statement.execute(sql);
@@ -98,10 +93,19 @@ public class DataSourceUtils {
     }
 
     public static void insertData(Star star) {
-        String sql = "insert into z_star (name,url) values (" + "\"" + star.getName() + "\"," + "\"" + star.getUrl() + "\"" + ");";
+        //        String sql = "insert into z_star (name,url) values (" + "\"" + star.getName() + "\"," + "\"" + star.getUrl() + "\"" + ");";
+        String sql = "insert into z_star (name,url,create_time) values (?,?,?)";
         try {
-            try (Connection c = getConnection(); Statement statement = c.createStatement()) {
-                statement.execute(sql);
+            star.setCreateTime(new java.util.Date());
+            try (Connection c = getConnection(); PreparedStatement statement = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setString(1, star.getName());
+                statement.setString(2, star.getUrl());
+                statement.setTimestamp(3, new Timestamp(star.getCreateTime().getTime()));
+                statement.execute();
+                ResultSet rs = statement.getGeneratedKeys();
+                if (rs != null && rs.next()) {
+                    star.setId(rs.getLong(1));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

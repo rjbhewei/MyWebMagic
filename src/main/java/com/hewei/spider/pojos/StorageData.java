@@ -1,4 +1,7 @@
 package com.hewei.spider.pojos;
+
+import java.util.Date;
+
 /**
  * 
  * @author hewei
@@ -25,6 +28,10 @@ public class StorageData {
 	private String experience;
 
 	private boolean errorPage;
+
+    private long id;
+
+    private Date createTime;
 
 	public String getExperience() {
 		return experience;
@@ -81,4 +88,20 @@ public class StorageData {
 	public void setErrorPage(boolean errorPage) {
 		this.errorPage = errorPage;
 	}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }

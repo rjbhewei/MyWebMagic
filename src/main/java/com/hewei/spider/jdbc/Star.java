@@ -1,5 +1,7 @@
 package com.hewei.spider.jdbc;
 
+import java.util.Date;
+
 /**
  * @author hewei
  * @version 5.0
@@ -8,9 +10,13 @@ package com.hewei.spider.jdbc;
  */
 public class Star {
 
+    private long id;
+
     private String name;
 
     private String url;
+
+    private Date createTime;
 
     public Star() {
     }
@@ -34,5 +40,21 @@ public class Star {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
