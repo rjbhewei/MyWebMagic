@@ -29,6 +29,12 @@ import java.util.regex.Pattern;
  */
 public class SpiderProcessor extends BaseProcessor {
 
+    private boolean useProxy;
+
+    public SpiderProcessor(boolean useProxy) {
+        this.useProxy = useProxy;
+    }
+
 	private static final Pattern ipPattern = Pattern.compile("<td>([0-9]*.[0-9]*.[0-9]*.[0-9]*)</td>");
 
 	private static final Pattern portPattern = Pattern.compile("<td><script>document.write\\((.*)\\);</script></td>");
@@ -103,11 +109,11 @@ public class SpiderProcessor extends BaseProcessor {
 
 	@Override
 	public Site getSite() {
-		return SiteUtils.getSpiderSite();
+		return SiteUtils.getSpiderSite(useProxy);
 	}
 
     public static void start() {
-        Spider spider = Spider.create(new SpiderProcessor());
+        Spider spider = Spider.create(new SpiderProcessor(true));
         spider.addUrl("http://pachong.org/");
         spider.setScheduler(new JedisScheduler(SpiderConstants.pool));
         spider.setSpiderListeners(Lists.newArrayList(new SpiderListener[]{new SpiderSearcherSpiderListener()}));

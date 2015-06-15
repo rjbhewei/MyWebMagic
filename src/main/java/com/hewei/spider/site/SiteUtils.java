@@ -26,22 +26,21 @@ public class SiteUtils {
 
     private static final String USERAGENT="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31";
 
-    public static Site getBaiduBaikeSite() {
+    public static Site getBaiduBaikeSite(boolean useProxy) {
         Site site = Site.me();
-        site.enableHttpProxyPool();
-        site.setSleepTime(1000);
+        site.setSleepTime(100);
         site.setCycleRetryTimes(1000);
-        site.setTimeOut(100);
+        site.setTimeOut(500);
         site.setUserAgent(USERAGENT);
-
-        loadProxy(site);
+        if (useProxy) {
+            loadProxy(site);
+        }
         return site;
     }
 
-    public static Site getSpiderSite(){
+    public static Site getSpiderSite(boolean useProxy){
         Site site = Site.me();
-        site.enableHttpProxyPool();
-        site.setSleepTime(1000);
+        site.setSleepTime(500);
         site.setUserAgent(USERAGENT);
         loadProxy(site);
         return site;
@@ -66,6 +65,7 @@ public class SiteUtils {
                 String[] tmp = list.get(i).split(":");
                 httpProxyList[i] = new String[]{tmp[0], tmp[1]};
             }
+            site.enableHttpProxyPool();
             site.getHttpProxyPool().addProxy(httpProxyList);
         }
     }
