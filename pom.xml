@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.xx</groupId>
-    <artifactId>testWebSpider</artifactId>
+    <artifactId>channel-WebSpider</artifactId>
     <version>1.0.${maven.build.timestamp}</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
