@@ -1,24 +1,23 @@
 package com.hewei.spider.jdbc;
+
 /**
- * 
  * @author hewei
- * 
- * @date 2015/6/15  14:14
- *
  * @version 5.0
- *
- * @desc 
- *
+ * @date 2015/6/15  14:14
+ * @desc
  */
 public class Star {
 
     private String name;
 
+    private String url;
+
     public Star() {
     }
 
-    public Star(String name) {
+    public Star(String name, String url) {
         this.name = name;
+        this.url = url;
     }
 
     public String getName() {
@@ -27,5 +26,13 @@ public class Star {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
