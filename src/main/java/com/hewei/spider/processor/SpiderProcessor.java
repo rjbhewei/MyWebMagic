@@ -1,7 +1,6 @@
 package com.hewei.spider.processor;
 
 import com.hewei.spider.constants.SpiderConstants;
-import com.hewei.spider.pipeline.EmptyPipeline;
 import com.hewei.spider.pojos.IpClass;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +10,7 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
+import us.codecraft.webmagic.scheduler.RedisScheduler;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -96,6 +96,8 @@ public class SpiderProcessor implements PageProcessor {
 
 		page.addTargetRequests(page.getHtml().xpath("//div[@class='natWap clear']/table").links().all());
 
+        page.setSkip(true);
+
 	}
 
 	@Override
@@ -103,13 +105,12 @@ public class SpiderProcessor implements PageProcessor {
 		return site;
 	}
 
-	public static void start() {
-		Spider spider = Spider.create(new SpiderProcessor());
-		spider.addUrl("http://pachong.org/");
-		//		spider.setScheduler(new RedisScheduler(SpiderConstants.pool));
-		spider.addPipeline(new EmptyPipeline());
-		spider.run();
-	}
+    public static void start() {
+        Spider spider = Spider.create(new SpiderProcessor());
+        spider.addUrl("http://pachong.org/");
+        spider.setScheduler(new RedisScheduler(SpiderConstants.pool));
+        spider.run();
+    }
 
 	public static void scan() {
 		while (true) {

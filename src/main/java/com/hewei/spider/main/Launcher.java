@@ -1,6 +1,5 @@
 package com.hewei.spider.main;
 
-import com.hewei.spider.processor.BaiduBaikeProcessor;
 import com.hewei.spider.processor.SpiderProcessor;
 
 /**
@@ -13,13 +12,13 @@ public class Launcher {
 
 	public static void main(String[] args) {
 
-		new Thread() {
-
-			@Override
-			public void run() {
-				BaiduBaikeProcessor.start();
-			}
-		}.start();
+//		new Thread() {
+//
+//			@Override
+//			public void run() {
+//				BaiduBaikeProcessor.start();
+//			}
+//		}.start();
 
 		new Thread() {
 
@@ -29,13 +28,13 @@ public class Launcher {
 			}
 		}.start();
 
-		new Thread() {
-
-			@Override
-			public void run() {
-				SpiderProcessor.scan();
-			}
-		}.start();
+//		new Thread() {
+//
+//			@Override
+//			public void run() {
+//				SpiderProcessor.scan();
+//			}
+//		}.start();
 	}
 
 }
