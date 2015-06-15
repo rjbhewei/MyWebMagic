@@ -1,5 +1,6 @@
 package com.hewei.spider.processor;
 
+import com.hewei.spider.jdbc.DataSourceUtils;
 import com.hewei.spider.pipeline.StoragePipeline;
 import com.hewei.spider.site.SiteUtils;
 import com.hewei.spider.utils.HtmlUtils;
@@ -131,6 +132,8 @@ public class BaiduBaikeProcessor extends BaseProcessor {
 	}
 
 	public static void start() {
+        DataSourceUtils.createTable();
+
 		Spider spider = Spider.create(new BaiduBaikeProcessor());
 		spider.addUrl("http://baike.baidu.com/view/1758.htm");
 		//		spider.setScheduler(new JedisScheduler(SpiderConstants.pool));

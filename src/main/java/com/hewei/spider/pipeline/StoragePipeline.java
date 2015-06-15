@@ -1,5 +1,7 @@
 package com.hewei.spider.pipeline;
 
+import com.hewei.spider.jdbc.DataSourceUtils;
+import com.hewei.spider.jdbc.Star;
 import com.hewei.spider.pojos.StorageData;
 import com.hewei.spider.utils.HtmlUtils;
 import org.slf4j.Logger;
@@ -8,8 +10,8 @@ import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
-import java.io.FileOutputStream;
 import java.util.Map;
+
 import static com.hewei.spider.constants.Messages.*;
 /**
  * 
@@ -41,16 +43,6 @@ public class StoragePipeline implements Pipeline {
 		data.setOriginalHtml(map.get(originalHtml).toString());
 		data.setSearchText(HtmlUtils.getPlainText(data.getOriginalHtml()));
 		logger.info(data.getName());
-		//            logger.info(data.getDesc());
-		//            logger.info(data.getExperience());
-
-		try {
-			FileOutputStream fileOutputStream = new FileOutputStream("d:\\111.txt", true);
-			fileOutputStream.write((data.getName() + "\r\n").getBytes("UTF-8"));
-			fileOutputStream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
+        DataSourceUtils.insertData(new Star(data.getName()));
+    }
 }
