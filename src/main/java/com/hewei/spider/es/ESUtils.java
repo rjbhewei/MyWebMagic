@@ -42,9 +42,9 @@ public class ESUtils {
 
     private static final String TYPE_NAME = "star";
 
-    private static final String CLUSTER_NAME = "hewei_test";
+    private static final String CLUSTER_NAME = "hewei1";
 
-    private static final String IP = "172.18.2.35";
+    private static final String IP = "172.18.2.40";
 
     private static final int port = 9300;
 
