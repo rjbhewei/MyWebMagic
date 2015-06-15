@@ -23,4 +23,6 @@ public class Messages {
 	public static final String errorPage = "errorPage";
 
 	public static final String middot = "&middot;";
+
+    public static final String PROXY_KEY = "proxy";
 }

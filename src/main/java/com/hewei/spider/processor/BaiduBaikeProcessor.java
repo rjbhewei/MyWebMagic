@@ -1,6 +1,7 @@
 package com.hewei.spider.processor;
 
 import com.hewei.spider.pipeline.StoragePipeline;
+import com.hewei.spider.site.SiteUtils;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.List;
 
@@ -20,11 +20,9 @@ import static com.hewei.spider.constants.Messages.*;
  * @date 2015/6/15  0:15
  * @desc
  */
-public class BaiduBaikeProcessor implements PageProcessor {
+public class BaiduBaikeProcessor extends BaseProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(BaiduBaikeProcessor.class);
-
-	public static Site site = Site.me().enableHttpProxyPool().setSleepTime(1000).setCycleRetryTimes(1000).setTimeOut(100).setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31");
 
 	@Override
 	public void process(Page page) {
@@ -40,7 +38,7 @@ public class BaiduBaikeProcessor implements PageProcessor {
 
 	@Override
 	public Site getSite() {
-		return site;
+		return SiteUtils.getBaiduBaikeSite();
 	}
 
 	private void experienceDeal(Page page) {
@@ -140,6 +138,7 @@ public class BaiduBaikeProcessor implements PageProcessor {
 		spider.setExitWhenComplete(false);
 		spider.thread(1);
 		spider.run();
+        addProxy(spider.getSite());
 	}
 
 	public static void otherStart() {
@@ -151,10 +150,6 @@ public class BaiduBaikeProcessor implements PageProcessor {
 		//        Spider.create(new BaiduBaikeSpider()).addUrl("http://baike.baidu.com/subview/2075/11117599.htm").addPipeline(new StoragePipeline()).run();//比尔
 		//        Spider.create(new BaiduBaikeSpider()).addUrl("http://baike.baidu.com/subview/16360/5414449.htm").addPipeline(new StoragePipeline()).run();//马云
 		//        Spider.create(new BaiduBaikeSpider()).addUrl("http://baike.baidu.com/subview/8125411/8784937.htm").addPipeline(new StoragePipeline()).run();//不存在的页面
-	}
-
-	public static void addProxy(){
-
 	}
 
 }
