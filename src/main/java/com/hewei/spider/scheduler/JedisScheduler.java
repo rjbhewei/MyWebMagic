@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.digest.DigestUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.scheduler.DuplicateRemovedScheduler;
@@ -32,9 +31,9 @@ public class JedisScheduler extends DuplicateRemovedScheduler implements Monitor
 
     private static final String ITEM_PREFIX = "item_";
 
-    public JedisScheduler(String host) {
-        this(new JedisPool(new JedisPoolConfig(), host));
-    }
+//    public JedisScheduler(String host) {
+//        this(new JedisPool(new JedisPoolConfig(), host));
+//    }
 
     public JedisScheduler(JedisPool pool) {
         this.pool = pool;
@@ -93,11 +92,9 @@ public class JedisScheduler extends DuplicateRemovedScheduler implements Monitor
             String field = DigestUtils.shaHex(url);
             byte[] bytes = jedis.hget(key.getBytes(), field.getBytes());
             if (bytes != null) {
-                Request o = JSON.parseObject(new String(bytes), Request.class);
-                return o;
+                return JSON.parseObject(new String(bytes), Request.class);
             }
-            Request request = new Request(url);
-            return request;
+            return new Request(url);
         } finally {
             pool.returnResource(jedis);
         }
