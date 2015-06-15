@@ -42,7 +42,9 @@ public class SiteUtils {
         Site site = Site.me();
         site.setSleepTime(500);
         site.setUserAgent(USERAGENT);
-        loadProxy(site);
+        if(useProxy){
+            loadProxy(site);
+        }
         return site;
     }
 
