@@ -7,9 +7,11 @@ import com.hewei.spider.scheduler.JedisScheduler;
 import com.hewei.spider.site.SiteUtils;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpHost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 
@@ -39,6 +41,11 @@ public class BaiduBaikeProcessor extends BaseProcessor {
 		if (errorDeal(page)) {
 			return;
 		}
+
+        if(useProxy){
+            proxyDeal(page);
+        }
+
 		originalHtmlDeal(page);
 		nameDeal(page);
 		descDeal(page);
@@ -48,6 +55,11 @@ public class BaiduBaikeProcessor extends BaseProcessor {
     @Override
     public Site getSite() {
         return SiteUtils.getBaiduBaikeSite(useProxy);
+    }
+
+    private void proxyDeal(Page page) {
+        HttpHost host = (HttpHost) page.getRequest().getExtra(Request.PROXY);
+        page.putField(httpHost, host.getHostName() + ":" + host.getPort());
     }
 
 	private void experienceDeal(Page page) {

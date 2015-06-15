@@ -42,7 +42,7 @@ public class StoragePipeline implements Pipeline {
 		data.setExperience(map.get(experience).toString());
 		data.setOriginalHtml(map.get(originalHtml).toString());
 		data.setSearchText(HtmlUtils.getPlainText(data.getOriginalHtml()));
-		logger.info(data.getName());
-        DataSourceUtils.insertData(new Star(data.getName(),data.getUrl()));
+        logger.info(map.get(httpHost) + "-->" + data.getName());
+        DataSourceUtils.insertData(new Star(data.getName(), data.getUrl()));
     }
 }

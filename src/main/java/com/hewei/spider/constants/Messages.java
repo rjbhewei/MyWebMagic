@@ -24,5 +24,7 @@ public class Messages {
 
 	public static final String middot = "&middot;";
 
+    public static final String httpHost = "httpHost";
+
     public static final String PROXY_KEY = "proxy";
 }
