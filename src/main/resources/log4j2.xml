@@ -7,10 +7,21 @@
     </Properties>
 
     <appenders>
+
         <Console name="console" target="SYSTEM_OUT">
             <ThresholdFilter level="warn" onMatch="DENY" onMismatch="ACCEPT"/>
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level [%class:%method:%line] - %msg%n"/>
         </Console>
+
+        <RollingFile name="all" fileName="${LOG_HOME}/all.log" filePattern="${LOG_BACKUP_HOME}/all-%d{yyyy_MM_dd}.log.zip">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{1} [%class:%method:%line] - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+        </RollingFile>
+
         <RollingFile name="error"  fileName="${LOG_HOME}/error.log" filePattern="${LOG_BACKUP_HOME}/error-%d{yyyy_MM_dd}.log.zip">
             <PatternLayout>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{1} [%class:%method:%line] - %msg%n</pattern>
@@ -23,8 +34,9 @@
 
     <loggers>
         <root level="info">
+            <appender-ref ref="all"/>
             <appender-ref ref="console"/>
-            <appender-ref ref="error" level="warn"/>
+            <appender-ref ref="error" level="error"/>
         </root>
     </loggers>
 </configuration>
