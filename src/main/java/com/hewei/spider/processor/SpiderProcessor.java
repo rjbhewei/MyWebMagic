@@ -5,6 +5,7 @@ import com.hewei.spider.constants.Messages;
 import com.hewei.spider.constants.SpiderConstants;
 import com.hewei.spider.listener.SpiderSearcherSpiderListener;
 import com.hewei.spider.pojos.IpClass;
+import com.hewei.spider.scheduler.JedisScheduler;
 import com.hewei.spider.site.SiteUtils;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
@@ -14,7 +15,6 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
-import us.codecraft.webmagic.scheduler.RedisScheduler;
 
 import java.util.List;
 import java.util.Map;
@@ -109,7 +109,7 @@ public class SpiderProcessor extends BaseProcessor {
     public static void start() {
         Spider spider = Spider.create(new SpiderProcessor());
         spider.addUrl("http://pachong.org/");
-        spider.setScheduler(new RedisScheduler(SpiderConstants.pool));
+        spider.setScheduler(new JedisScheduler(SpiderConstants.pool));
         spider.setSpiderListeners(Lists.newArrayList(new SpiderListener[]{new SpiderSearcherSpiderListener()}));
         spider.run();
         addProxy(spider.getSite());

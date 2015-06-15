@@ -133,7 +133,7 @@ public class BaiduBaikeProcessor extends BaseProcessor {
 	public static void start() {
 		Spider spider = Spider.create(new BaiduBaikeProcessor());
 		spider.addUrl("http://baike.baidu.com/view/1758.htm");
-		//		spider.setScheduler(new RedisScheduler(SpiderConstants.pool));
+		//		spider.setScheduler(new JedisScheduler(SpiderConstants.pool));
 		spider.addPipeline(new StoragePipeline());
 		spider.setExitWhenComplete(false);
 		spider.thread(1);
