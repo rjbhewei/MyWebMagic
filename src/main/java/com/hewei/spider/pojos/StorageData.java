@@ -1,5 +1,7 @@
 package com.hewei.spider.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -27,6 +29,7 @@ public class StorageData {
 
 	private String experience;
 
+    @JsonIgnore
 	private boolean errorPage;
 
     private long id;

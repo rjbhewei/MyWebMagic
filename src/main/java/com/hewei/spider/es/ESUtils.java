@@ -67,41 +67,51 @@ public class ESUtils {
             mapping = XContentFactory.jsonBuilder()
                     .startObject()
                         .startObject(TYPE_NAME)
+//                            .startObject("_timestamp")
+//                                .field("enabled","true")
+//                                .field("format","yyyy-MM-dd HH:mm:ss")
+//                            .endObject()
                             .startObject("properties")
                                 .startObject("id")
                                     .field("type", "long")
+                                    .field("index", "not_analyzed")
                                 .endObject()
                                 .startObject("createTime")
-                                    .field("type", "date")
+                                    .field("type", "String")
+                                    .field("index", "not_analyzed")
                                 .endObject()
                                 .startObject("name")
                                     .field("type", "string")
                                     .field("indexAnalyzer", "ik")
                                     .field("searchAnalyzer", "ik")
+                                    .field("index","analyzed")
                                 .endObject()
                                 .startObject("url")
                                     .field("type", "string")
                                     .field("indexAnalyzer", "ik")
                                     .field("searchAnalyzer", "ik")
+                                    .field("index", "analyzed")
                                 .endObject()
                                 .startObject("searchText")
                                     .field("type", "string")
                                     .field("indexAnalyzer", "ik")
                                     .field("searchAnalyzer", "ik")
+                                    .field("index", "analyzed")
                                 .endObject()
                                 .startObject("desc")
                                     .field("type", "string")
-                                    .field("index", "not_analyzed")
+//                                    .field("index", "not_analyzed")
+                                    .field("index", "no")
                                     .field("include_in_all", "false")
                                 .endObject()
                                 .startObject("experience")
                                     .field("type", "string")
-                                    .field("index", "not_analyzed")
+                                    .field("index", "no")
                                     .field("include_in_all", "false")
                                 .endObject()
                                 .startObject("originalHtml")
                                     .field("type", "string")
-                                    .field("index", "not_analyzed")
+                                    .field("index", "no")
                                     .field("include_in_all", "false")
                                 .endObject()
                             .endObject()
@@ -165,6 +175,7 @@ public class ESUtils {
 
     public static void main(String[] args) {
         try (Client client = ESUtils.getClient()) {
+            dropIndex(client);
             ESUtils.createIndex(client);
             ESUtils.createMapping(client);
             StorageData data = new StorageData();
@@ -176,8 +187,8 @@ public class ESUtils {
             data.setExperience("贺伟专业来数云打酱油的");
             data.setOriginalHtml("<div>贺伟就是来哈哈哈打酱油的,怎么滴</div>");
             data.setSearchText("贺伟啊");
-//            add(client, data);
-            search(client, "name", "贺伟");
+            add(client, data);
+//            search(client, "name", "贺伟");
 //            dropIndex(client);
         }
     }
