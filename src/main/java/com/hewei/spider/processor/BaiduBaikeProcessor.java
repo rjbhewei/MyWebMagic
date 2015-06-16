@@ -64,7 +64,7 @@ public class BaiduBaikeProcessor extends BaseProcessor {
     }
 
     private boolean filter(Page page) {
-        List<String> list = page.getHtml().xpath("//div[@class=\"zhixin-group js-group\"]").links().all();
+        List<String> list = page.getHtml().xpath("//div[@id=\"lemma-list\"]//li[@class=\"list-dot list-dot-paddingleft\"]").links().all();
         if (Collections.isNullOrEmpty(list)) {
             return false;
         }
