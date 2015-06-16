@@ -44,7 +44,7 @@ public class EsPipeline implements Pipeline {
             return;
         }
 
-        if (map.get(filter) == null) {
+        if (map.get(filter) != null) {
             logger.info("skip page");
             return;
         }
