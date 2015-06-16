@@ -9,6 +9,7 @@ import com.hewei.spider.site.SiteUtils;
 import com.hewei.spider.utils.HtmlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
+import org.assertj.core.util.Collections;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,26 +38,39 @@ public class BaiduBaikeProcessor extends BaseProcessor {
         this.useProxy = useProxy;
     }
 
-	@Override
-	public void process(Page page) {
-		newDeal(page);
-		if (errorDeal(page)) {
-			return;
-		}
+    @Override
+    public void process(Page page) {
+        newDeal(page);
+        if (errorDeal(page)) {
+            return;
+        }
 
-        if(useProxy){
+        if (useProxy) {
             proxyDeal(page);
         }
 
-		originalHtmlDeal(page);
-		nameDeal(page);
-		descDeal(page);
-		experienceDeal(page);
-	}
+        if (filter(page)) {
+            return;
+        }
+        originalHtmlDeal(page);
+        nameDeal(page);
+        descDeal(page);
+        experienceDeal(page);
+    }
 
     @Override
     public Site getSite() {
         return SiteUtils.getBaiduBaikeSite(useProxy);
+    }
+
+    private boolean filter(Page page) {
+        List<String> list = page.getHtml().xpath("//div[@class=\"zhixin-group js-group\"]").links().all();
+        if (Collections.isNullOrEmpty(list)) {
+            return false;
+        }
+        page.addTargetRequests(list);
+        page.putField(filter, 1);
+        return true;
     }
 
     private void proxyDeal(Page page) {
