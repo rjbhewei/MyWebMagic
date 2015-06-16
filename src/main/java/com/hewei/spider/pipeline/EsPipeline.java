@@ -13,11 +13,10 @@ import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.hewei.spider.constants.Messages.*;
-import static com.hewei.spider.constants.Messages.httpHost;
-import static com.hewei.spider.constants.Messages.originalHtml;
 
 /**
  * 
@@ -34,10 +33,12 @@ public class EsPipeline implements Pipeline {
 
     private static final Logger logger = LoggerFactory.getLogger(StoragePipeline.class);
 
+    public static final ExecutorService es = Executors.newFixedThreadPool(10);
+
     @Override
     public void process(final ResultItems resultItems, final Task task) {
 
-        Executors.newFixedThreadPool(10).execute(new Runnable() {
+        es.execute(new Runnable() {
 
             @Override
             public void run() {

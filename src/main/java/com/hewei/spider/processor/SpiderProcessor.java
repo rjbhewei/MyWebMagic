@@ -16,8 +16,12 @@ import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -125,8 +129,10 @@ public class SpiderProcessor extends BaseProcessor {
         spider.run();
     }
 
+    public static final ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
+
     public static void redeal(final Spider spider, final JedisScheduler scheduler) {
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
+        es.scheduleAtFixedRate(new Runnable() {
 
             @Override
             public void run() {

@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,8 +31,10 @@ public abstract class BaseProcessor implements PageProcessor {
         addProxy(site, 10, 10);
     }
 
+    public static final ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
+
     public static void addProxy(final Site site, final long initialDelay, final long delay) {
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
+        es.scheduleAtFixedRate(new Runnable() {
 
             @Override
             public void run() {
