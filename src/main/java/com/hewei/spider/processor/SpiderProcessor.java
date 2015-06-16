@@ -120,9 +120,9 @@ public class SpiderProcessor extends BaseProcessor {
         spider.setScheduler(scheduler);
         spider.setSpiderListeners(Lists.newArrayList(new SpiderListener[]{new SpiderSearcherSpiderListener()}));
         spider.setExitWhenComplete(false);
-        spider.run();
         addProxy(spider.getSite());
         redeal(spider,scheduler);
+        spider.run();
     }
 
     public static void redeal(final Spider spider, final JedisScheduler scheduler) {
@@ -166,6 +166,6 @@ public class SpiderProcessor extends BaseProcessor {
                 spider.addUrl(set.toArray(new String[set.size()]));
 
             }
-        }, 5, 5, TimeUnit.MINUTES);
+        }, 1, 5, TimeUnit.MINUTES);
     }
 }

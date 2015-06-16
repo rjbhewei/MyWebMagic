@@ -179,8 +179,8 @@ public class BaiduBaikeProcessor extends BaseProcessor {
         spider.addPipeline(new EsPipeline());
         spider.setExitWhenComplete(false);
         spider.thread(50);
-        spider.run();
         addProxy(spider.getSite());
+        spider.run();
     }
 
     private static String[] originalUrl(){
