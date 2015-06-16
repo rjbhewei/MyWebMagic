@@ -100,11 +100,11 @@ public class JedisScheduler extends DuplicateRemovedScheduler implements Monitor
         }
     }
 
-    protected String getSetKey(Task task) {
+    public String getSetKey(Task task) {
         return SET_PREFIX + task.getUUID();
     }
 
-    protected String getQueueKey(Task task) {
+    public String getQueueKey(Task task) {
         return QUEUE_PREFIX + task.getUUID();
     }
 

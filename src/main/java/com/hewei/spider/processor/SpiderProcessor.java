@@ -16,8 +16,9 @@ import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -115,9 +116,56 @@ public class SpiderProcessor extends BaseProcessor {
     public static void start() {
         Spider spider = Spider.create(new SpiderProcessor(true));
         spider.addUrl("http://pachong.org/");
-        spider.setScheduler(new JedisScheduler(SpiderConstants.pool));
+        JedisScheduler scheduler = new JedisScheduler(SpiderConstants.pool);
+        spider.setScheduler(scheduler);
         spider.setSpiderListeners(Lists.newArrayList(new SpiderListener[]{new SpiderSearcherSpiderListener()}));
+        spider.setExitWhenComplete(false);
         spider.run();
         addProxy(spider.getSite());
+        redeal(spider,scheduler);
+    }
+
+    public static void redeal(final Spider spider, final JedisScheduler scheduler) {
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+
+                Jedis jedis = SpiderConstants.pool.getResource();
+
+                String queueKey = scheduler.getQueueKey(spider);
+                long size = 0;
+                try {
+                    size = jedis.llen(queueKey);
+                } finally {
+                    SpiderConstants.pool.returnResource(jedis);
+                }
+
+                if (size > 0) {
+                    return;
+                }
+
+                jedis = SpiderConstants.pool.getResource();
+
+                String setKey = scheduler.getSetKey(spider);
+
+                Set<String> set = new HashSet<>();
+
+                try {
+                    set = jedis.smembers(setKey);
+                } finally {
+                    SpiderConstants.pool.returnResource(jedis);
+                }
+
+                if (set.isEmpty()) {
+                    return;
+                }
+
+                scheduler.resetDuplicateCheck(spider);
+
+                spider.addUrl(set.toArray(new String[set.size()]));
+
+            }
+        }, 5, 5, TimeUnit.MINUTES);
     }
 }
