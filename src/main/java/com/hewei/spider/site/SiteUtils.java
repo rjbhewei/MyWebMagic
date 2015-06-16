@@ -3,11 +3,10 @@ package com.hewei.spider.site;
 import com.hewei.spider.constants.SpiderConstants;
 import redis.clients.jedis.Jedis;
 import us.codecraft.webmagic.Site;
+import us.codecraft.webmagic.proxy.ProxyPool;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
 import static com.hewei.spider.constants.Messages.PROXY_KEY;
 
@@ -67,8 +66,22 @@ public class SiteUtils {
                 String[] tmp = list.get(i).split(":");
                 httpProxyList[i] = new String[]{tmp[0], tmp[1]};
             }
-            site.enableHttpProxyPool();
-            site.getHttpProxyPool().addProxy(httpProxyList);
+            if (site.getHttpProxyPool() == null) {
+                ProxyPool pool = new ProxyPool(Arrays.asList(httpProxyList), false);
+
+                //坑,只能用反射,不过只有一次
+                try {
+                    Field f = site.getClass().getDeclaredField("httpProxyPool");
+                    f.setAccessible(true);
+                    f.set(site, pool);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+
+            } else {
+                site.getHttpProxyPool().addProxy(httpProxyList);
+            }
         }
     }
 }
