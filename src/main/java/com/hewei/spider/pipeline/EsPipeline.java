@@ -13,6 +13,7 @@ import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import static com.hewei.spider.constants.Messages.*;
 import static com.hewei.spider.constants.Messages.httpHost;
@@ -34,41 +35,48 @@ public class EsPipeline implements Pipeline {
     private static final Logger logger = LoggerFactory.getLogger(StoragePipeline.class);
 
     @Override
-    public void process(ResultItems resultItems, Task task) {
-        StorageData data = new StorageData();
+    public void process(final ResultItems resultItems, final Task task) {
 
-        Map<String, Object> map = resultItems.getAll();
-        data.setErrorPage(map.get(errorPage) != null);
-        if (data.isErrorPage()) {
-            logger.info("error page");
-            return;
-        }
+        Executors.newFixedThreadPool(10).execute(new Runnable() {
 
-        if (map.get(filter) != null) {
-            logger.info("skip page");
-            return;
-        }
+            @Override
+            public void run() {
+                StorageData data = new StorageData();
 
-        data.setUrl(resultItems.getRequest().getUrl());
-        data.setName(map.get(name).toString());
-        data.setDesc(map.get(desc).toString());
-        data.setExperience(map.get(experience).toString());
-        data.setOriginalHtml(map.get(originalHtml).toString());
-        data.setSearchText(HtmlUtils.getPlainText(data.getOriginalHtml()));
+                Map<String, Object> map = resultItems.getAll();
+                data.setErrorPage(map.get(errorPage) != null);
+                if (data.isErrorPage()) {
+                    logger.info("error page");
+                    return;
+                }
 
-        logger.info(map.get(httpHost) + "-->" + data.getName());
+                if (map.get(filter) != null) {
+                    logger.info("skip page");
+                    return;
+                }
 
-        Star star = new Star(data.getName(), data.getUrl());
+                data.setUrl(resultItems.getRequest().getUrl());
+                data.setName(map.get(name).toString());
+                data.setDesc(map.get(desc).toString());
+                data.setExperience(map.get(experience).toString());
+                data.setOriginalHtml(map.get(originalHtml).toString());
+                data.setSearchText(HtmlUtils.getPlainText(data.getOriginalHtml()));
 
-        DataSourceUtils.insertData(star);
+                logger.info(map.get(httpHost) + "-->" + data.getName());
 
-        data.setCreateTime(star.getCreateTime());
+                Star star = new Star(data.getName(), data.getUrl());
 
-        data.setId(star.getId());
+                DataSourceUtils.insertData(star);
 
-        try (Client client = ESUtils.getClient()) {
-            ESUtils.add(client, data);
-        }
+                data.setCreateTime(star.getCreateTime());
+
+                data.setId(star.getId());
+
+                try (Client client = ESUtils.getClient()) {
+                    ESUtils.add(client, data);
+                }
+            }
+        });
 
     }
 
