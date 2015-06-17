@@ -148,7 +148,8 @@ public class ESUtils {
         //        BoolQueryBuilder query = QueryBuilders.boolQuery();
         //        query.must(QueryBuilders.termQuery("description", "打开"));
         QueryBuilder query = QueryBuilders.queryStringQuery(searchField+":"+searchText);
-        SearchResponse response = client.prepareSearch(INDEX_NAME).setTypes(TYPE_NAME).setQuery(query).addHighlightedField(searchField).setHighlighterPreTags("<span style=\"color:red\">").setHighlighterPostTags("</span>").setFrom(0).setSize(60).execute().actionGet();
+//        .setFetchSource(new String[]{"name","url"},null)
+        SearchResponse response = client.prepareSearch(INDEX_NAME).setTypes(TYPE_NAME).setQuery(query).addHighlightedField(searchField).setHighlighterPreTags("<span style=\"color:red\">").setHighlighterPostTags("</span>").setFrom(0).setSize(5).execute().actionGet();
         SearchHits shs = response.getHits();
         for (SearchHit hit : shs) {
             System.out.println("搜索到的信息:" + hit.getSourceAsString());
