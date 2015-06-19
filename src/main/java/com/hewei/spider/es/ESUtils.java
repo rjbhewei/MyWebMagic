@@ -75,7 +75,7 @@ public class ESUtils {
                                     .field("index", "not_analyzed")
                                 .endObject()
                                 .startObject("createTime")
-                                    .field("type", "String")
+                                    .field("type", "date")
                                     .field("index", "not_analyzed")
                                     .field("format", "yyyy-MM-dd HH:mm:ss")
                                 .endObject()
