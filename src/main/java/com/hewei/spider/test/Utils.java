@@ -7,10 +7,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.IOException;
 
 public class Utils {
-	public static ObjectMapper mapper = new ObjectMapper(); 
-	public static ObjectMapper getMapper(){
-		return mapper;
-	}
+	public static ObjectMapper mapper = new ObjectMapper();
+
 	public static String toJson(Object o){
 		try {
 			ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
