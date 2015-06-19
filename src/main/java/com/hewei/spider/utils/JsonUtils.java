@@ -44,7 +44,7 @@ public class JsonUtils {
 
     static {
         List<SerializerFeature> serializerFeatureList = Lists.newArrayList();
-        serializerFeatureList.add(SerializerFeature.WriteClassName);
+//        serializerFeatureList.add(SerializerFeature.WriteClassName);
         serializerFeatureList.add(SerializerFeature.SkipTransientField);
         serializerFeatureList.add(SerializerFeature.WriteDateUseDateFormat);
         serializerFeatureList.add(SerializerFeature.WriteNullListAsEmpty);
