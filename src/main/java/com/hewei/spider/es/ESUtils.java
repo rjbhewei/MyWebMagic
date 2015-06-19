@@ -1,8 +1,7 @@
 package com.hewei.spider.es;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hewei.spider.pojos.StorageData;
-import com.hewei.spider.test.Utils;
+import com.hewei.spider.utils.JsonUtils;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -78,6 +77,7 @@ public class ESUtils {
                                 .startObject("createTime")
                                     .field("type", "String")
                                     .field("index", "not_analyzed")
+                                    .field("format", "yyyy-MM-dd HH:mm:ss")
                                 .endObject()
                                 .startObject("name")
                                     .field("type", "string")
@@ -139,7 +139,7 @@ public class ESUtils {
 
     public static IndexResponse add(Client client, StorageData data) {
         IndexResponse indexResponse = client.prepareIndex().setIndex(INDEX_NAME).setType(TYPE_NAME).
-                setSource(Utils.toJson(data)).setId(String.valueOf(data.getId())).execute().actionGet();
+                setSource(JsonUtils.toJson(data)).setId(String.valueOf(data.getId())).execute().actionGet();
         System.out.println("添加信息,isCreated=" + indexResponse.isCreated());
         return indexResponse;
     }
@@ -153,7 +153,7 @@ public class ESUtils {
         SearchHits shs = response.getHits();
         for (SearchHit hit : shs) {
             System.out.println("搜索到的信息:" + hit.getSourceAsString());
-            StorageData data = readMessage(hit.getSourceAsString());
+            StorageData data = JsonUtils.parse(hit.getSourceAsString(), StorageData.class);
             //获取对应的高亮域
             Map<String, HighlightField> result = hit.highlightFields();
             //从设定的高亮域中取得指定域
@@ -191,17 +191,6 @@ public class ESUtils {
 //            search(client, "name", "贺伟");
 //            dropIndex(client);
         }
-    }
-
-    public static final ObjectMapper mapper = new ObjectMapper();
-
-    public static StorageData readMessage(String message) {
-        try {
-            return mapper.readValue(message, StorageData.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

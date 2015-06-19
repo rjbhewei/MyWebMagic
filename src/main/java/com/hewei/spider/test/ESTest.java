@@ -1,5 +1,6 @@
 package com.hewei.spider.test;
 
+import com.hewei.spider.utils.JsonUtils;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -56,7 +57,7 @@ public class ESTest {
         SearchHits shs = response.getHits();
         for (SearchHit hit : shs) {
             System.out.println("搜索到的信息:" + hit.getSourceAsString());
-            Article article = Utils.readMessage(hit.getSourceAsString());
+            Article article = JsonUtils.parse(hit.getSourceAsString(),Article.class);
             //获取对应的高亮域
             Map<String, HighlightField> result = hit.highlightFields();
             //从设定的高亮域中取得指定域
@@ -91,7 +92,7 @@ public class ESTest {
         article.setCreateDate(new Date());
         article.setDescription(article.getDescription() + "---hewei");
 
-        UpdateResponse updateResponse = client.prepareUpdate().setIndex(INDEX_NAME).setType(TYPE_NAME).setDoc(Utils.toJson(article)).setId(String.valueOf(article.getId())).execute().actionGet();
+        UpdateResponse updateResponse = client.prepareUpdate().setIndex(INDEX_NAME).setType(TYPE_NAME).setDoc(JsonUtils.toJson(article)).setId(String.valueOf(article.getId())).execute().actionGet();
 
         System.out.println("更新信息，isCreated=" + updateResponse.isCreated());
 
@@ -114,7 +115,7 @@ public class ESTest {
     }
 
     private static IndexResponse add(Client client, Article article) {
-        IndexResponse indexResponse = client.prepareIndex().setIndex(INDEX_NAME).setType(TYPE_NAME).setSource(Utils.toJson(article)).setId(String.valueOf(article.getId())).execute().actionGet();
+        IndexResponse indexResponse = client.prepareIndex().setIndex(INDEX_NAME).setType(TYPE_NAME).setSource(JsonUtils.toJson(article)).setId(String.valueOf(article.getId())).execute().actionGet();
         System.out.println("添加信息,isCreated=" + indexResponse.isCreated());
         return indexResponse;
     }

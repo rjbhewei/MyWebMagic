@@ -1,6 +1,6 @@
 package com.hewei.spider.pojos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
 
@@ -29,8 +29,8 @@ public class StorageData {
 
 	private String experience;
 
-    @JsonIgnore
-	private boolean errorPage;
+    @JSONField(serialize = false)
+    private boolean errorPage;
 
     private long id;
 
