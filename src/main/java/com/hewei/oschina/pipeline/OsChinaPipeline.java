@@ -26,13 +26,11 @@ public class OsChinaPipeline implements Pipeline {
     @Override
     public void process(ResultItems resultItems, Task task) {
         Map<String, Object> map = resultItems.getAll();
-        System.out.println("1-----");
         List<OsChinaRootCity> list = (List<OsChinaRootCity>) map.get(OsChinaConstants.CITY);
         if (CollectionUtils.isNotEmpty(list)) {
             for (OsChinaRootCity city : list) {
                 System.out.println(city.getName() + "--" + city.getUrl());
             }
         }
-        System.out.println("1-----end");
     }
 }
