@@ -61,7 +61,7 @@ public class OsChinaProcessor implements PageProcessor {
     private void activityDetails(Page page) {
         Html pageHtml = page.getHtml();
 
-        String headerMessage = pageHtml.xpath("//div[@class='review_detail fleft']").toString();
+        String headerMessage = pageHtml.xpath("//dl[@class='review_detail fleft']").toString();
 
         System.out.println("-----------" + headerMessage);
 
