@@ -73,67 +73,86 @@ public class OsChinaProcessor implements PageProcessor {
         page.putField(ACTIVITY_DETAILS, new OsChinaActivityDetails(title, time, location, expense, type, initiator,initiatorUrl, desc));
     }
 
-    private void eventDeal(Page page) {
+	private void eventDeal(Page page) {
 
-        List<String> list = page.getHtml().xpath("//li[@class='event_reviewed_item mtb20 clearfix']").all();
+		List<String> list = page.getHtml().xpath("//li[@class='event_reviewed_item mtb20 clearfix']").all();
 
-        List<OsChinaActivity> activityList = new ArrayList<>(list.size());
+		List<OsChinaActivity> activityList = new ArrayList<>(list.size());
 
-        Set<String> set = new HashSet<>(list.size());
+		Set<String> set = new HashSet<>(list.size());
 
-        for (String message : list) {
+		for (String message : list) {
 
-            Html html = Html.create(message);
+			Html html = Html.create(message);
 
-            String url = html.xpath("//div[1]").links().get();
+			String url = html.xpath("//div[1]").links().get();
 
-            set.add(url);
+			set.add(url);
 
-            String picture = html.xpath("//div[1]//img/@src").get();
+			String picture = html.xpath("//div[1]//img/@src").get();
 
-            String title = html.xpath("//div[2]/[@class='event_reviewed_title pb10']/a/text()").get();
+			String title = html.xpath("//div[2]/[@class='event_reviewed_title pb10']/a/text()").get();
 
-            String desc = html.xpath("//div[2]/text()").get();
+			String desc = html.xpath("//div[2]/text()").get();
 
-            String time = html.xpath("//div[2]/[@class='event_reviewed_time pb5']/text()").get();
+			String time = html.xpath("//div[2]/[@class='event_reviewed_time pb5']/text()").get();
 
-            String location = html.xpath("//div[2]/[@class='event_reviewd_position pb5']/text()").get();
+			String location = html.xpath("//div[2]/[@class='event_reviewd_position pb5']/text()").get();
 
-            activityList.add(new OsChinaActivity(url, picture, title, desc, time, location));
-        }
-        page.putField(ACTIVITY, activityList);
+			activityList.add(new OsChinaActivity(url, picture, title, desc, time, location));
+		}
+		page.putField(ACTIVITY, activityList);
 
-        activitySet.addAll(set);
+		activitySet.addAll(set);
 
-        System.out.println("activitySet:" + Arrays.toString(activitySet.toArray(new String[activitySet.size()])));
+		List<String> pager = page.getHtml().xpath("//ul[@class='pager']/li[@class='page']").links().all();
 
-        newDeal(page, set);
-    }
+		citySet.addAll(pager);
+
+		page.putField(CITY, pager);
+
+		set.addAll(pager);
+
+		newDeal(page, set);
+	}
 
     private void cityDeal(Page page) {
+
         List<String> list = page.getHtml().xpath("//div[@class='all_groups clearfix']/div[1]//a").all();
+
         List<OsChinaRootCity> cityList = new ArrayList<>(list.size());
+
         Set<String> set = new HashSet<>();
+
         for (String message : list) {
+
             Html html = Html.create(message);
+
             List<String> tmp = html.links().all();
+
             if (CollectionUtils.isEmpty(tmp)) {
                 continue;
             }
+
             String url = tmp.get(0);
+
             String name = html.xpath("//a/text()").toString();
+
             if (StringUtils.isEmpty(name) || StringUtils.isEmpty(url)) {
                 System.out.println("error name:" + name + "|url:" + url);
                 continue;
             }
+
             String newUrl = url.endsWith("/") ? url + "event" : url + "/event";
+
             set.add(newUrl);
+
             cityList.add(new OsChinaRootCity(name, url));
         }
-        page.putField(CITY, cityList);
-        citySet.addAll(set);
 
-        System.out.println("citySet:" + Arrays.toString(citySet.toArray(new String[citySet.size()])));
+        page.putField(CITY, cityList);
+
+        citySet.addAll(set);
 
         newDeal(page, set);
     }

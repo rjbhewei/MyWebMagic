@@ -10,5 +10,5 @@ package com.hewei.oschina.pojos;
  * @desc 
  *
  */
-public class OsChinaResponse {
+public interface OsChinaPojo {
 }

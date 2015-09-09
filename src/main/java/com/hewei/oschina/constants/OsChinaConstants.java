@@ -17,13 +17,12 @@ public class OsChinaConstants {
 
     public static final String ES_INDEX_NAME = "oschina_index";
 
-    public static final String ES_TYPE_NAME = "oschina_type";
-
     public static final String ORIGINAL_HTML = "originalhtml";
 
     public static final String CITY = "city";
 
     public static final String ACTIVITY = "activity";
+
     public static final String ACTIVITY_DETAILS = "activityDetails";
 
     /**************************************************************************/

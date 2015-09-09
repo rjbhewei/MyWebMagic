@@ -10,7 +10,7 @@ package com.hewei.oschina.pojos;
  * @desc 
  *
  */
-public class OsChinaActivity {
+public class OsChinaActivity implements OsChinaPojo{
     private String url;
     private String picture;
     private String title;

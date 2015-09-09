@@ -1,6 +1,6 @@
 package com.hewei.oschina.utils;
 
-import com.hewei.oschina.pojos.OsChinaResponse;
+import com.hewei.oschina.pojos.OsChinaPojo;
 import com.hewei.spider.utils.JsonUtils;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -57,7 +57,7 @@ public class OsChinaEsUtils {
         }
     }
 
-    public static IndexResponse add(Client client, OsChinaResponse data) {
-        return client.prepareIndex().setIndex(ES_INDEX_NAME).setType(ES_TYPE_NAME).setSource(JsonUtils.toJson(data)).get();
-    }
+	public static IndexResponse add(String esType, OsChinaPojo data) {
+		return getClient().prepareIndex().setIndex(ES_INDEX_NAME).setType(esType).setSource(JsonUtils.toJson(data)).get();
+	}
 }
