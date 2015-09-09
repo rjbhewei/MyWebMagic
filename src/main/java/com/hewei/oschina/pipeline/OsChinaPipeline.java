@@ -32,8 +32,6 @@ public class OsChinaPipeline implements Pipeline {
 	@Override
 	public void process(ResultItems resultItems, Task task) {
 
-		System.out.println(total.incrementAndGet());
-
 		Map<String, Object> map = resultItems.getAll();
 
 		List<OsChinaRootCity> cityList = (List<OsChinaRootCity>) map.get(OsChinaConstants.CITY);
@@ -42,6 +40,7 @@ public class OsChinaPipeline implements Pipeline {
 			for (OsChinaRootCity city : cityList) {
 				OsChinaEsUtils.add(OsChinaConstants.CITY, city);
 			}
+			System.out.println(total.addAndGet(cityList.size()));
 			return;
 		}
 
@@ -51,6 +50,7 @@ public class OsChinaPipeline implements Pipeline {
 			for (OsChinaActivity activity : activityList) {
 				OsChinaEsUtils.add(OsChinaConstants.ACTIVITY, activity);
 			}
+			System.out.println(total.addAndGet(activityList.size()));
 			return;
 		}
 
@@ -58,6 +58,7 @@ public class OsChinaPipeline implements Pipeline {
 
 		if (activityDetails != null) {
 			OsChinaEsUtils.add(OsChinaConstants.ACTIVITY_DETAILS, activityDetails);
+			System.out.println(total.incrementAndGet());
 		}
 
 	}
