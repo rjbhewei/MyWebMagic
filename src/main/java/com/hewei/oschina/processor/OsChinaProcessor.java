@@ -60,31 +60,17 @@ public class OsChinaProcessor implements PageProcessor {
 
     private void activityDetails(Page page) {
         Html pageHtml = page.getHtml();
-
         String headerMessage = pageHtml.xpath("//dl[@class='review_detail fleft']").toString();
-
-        System.out.println("-----------" + headerMessage);
-
         Html html = Html.create(headerMessage);
-
         String title = html.xpath("//dt[@class='review_title mb15']/span/text()").get();
-        System.out.println("title+++++" + title);
         String time = html.xpath("//dd[1]/text()").get();
-        System.out.println("time+++++" + time);
         String location = html.xpath("//dd[2]/text()").get();
-        System.out.println("location+++++" + location);
         String expense = html.xpath("//dd[3]/text()").get();
-        System.out.println("expense+++++" + expense);
         String type = html.xpath("//dd[4]/text()").get();
-        System.out.println("type+++++" + type);
-        String initiator = html.xpath("//dd[6]/text()").get();
-        System.out.println("initiator+++++" + initiator);
-
-
+        String initiator = html.xpath("//dd[6]/a/text()").get();
+        String initiatorUrl = html.xpath("//dd[6]").links().get();
         String desc = pageHtml.xpath("//div[@class='review_description mtb10 markdown-content']").toString();
-
-        System.out.println("desc+++++" + desc);
-        page.putField(ACTIVITY_DETAILS, new OsChinaActivityDetails(title, time, location, expense, type, initiator, desc));
+        page.putField(ACTIVITY_DETAILS, new OsChinaActivityDetails(title, time, location, expense, type, initiator,initiatorUrl, desc));
     }
 
     private void eventDeal(Page page) {

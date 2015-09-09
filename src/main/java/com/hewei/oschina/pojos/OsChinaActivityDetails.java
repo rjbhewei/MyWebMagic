@@ -17,17 +17,27 @@ public class OsChinaActivityDetails {
     private String expense;//费用
     private String type;//类型
     private String initiator;//发起人
+    private String initiatorUrl;//发起人
 
     private String desc;
 
-    public OsChinaActivityDetails(String title, String time, String location, String expense, String type, String initiator, String desc) {
+    public OsChinaActivityDetails(String title, String time, String location, String expense, String type, String initiator, String initiatorUrl,String desc) {
         this.title = title;
         this.time = time;
         this.location = location;
         this.expense = expense;
         this.type = type;
         this.initiator = initiator;
+        this.initiatorUrl = initiatorUrl;
         this.desc = desc;
+    }
+
+    public String getInitiatorUrl() {
+        return initiatorUrl;
+    }
+
+    public void setInitiatorUrl(String initiatorUrl) {
+        this.initiatorUrl = initiatorUrl;
     }
 
     public String getTitle() {

@@ -4,7 +4,6 @@ import com.hewei.oschina.constants.OsChinaConstants;
 import com.hewei.oschina.pipeline.OsChinaPipeline;
 import com.hewei.oschina.processor.OsChinaProcessor;
 import com.hewei.oschina.utils.JedisUtils;
-import com.hewei.oschina.utils.OsChinaEsUtils;
 import com.hewei.spider.scheduler.JedisScheduler;
 import us.codecraft.webmagic.Spider;
 
@@ -22,7 +21,7 @@ import us.codecraft.webmagic.Spider;
 public class OsChinaRunner {
 
     public static void start() {
-        OsChinaEsUtils.createIndex();
+//        OsChinaEsUtils.createIndex();
         Spider spider = Spider.create(new OsChinaProcessor());
         spider.addUrl(originalUrl());
         spider.setScheduler(new JedisScheduler(JedisUtils.newPool()));
