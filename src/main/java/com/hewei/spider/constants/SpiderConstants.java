@@ -15,5 +15,5 @@ import redis.clients.jedis.JedisPoolConfig;
  *
  */
 public class SpiderConstants {
-	public static JedisPool pool = new JedisPool(new JedisPoolConfig(), "172.18.2.35", 7009);
+	public static JedisPool pool = new JedisPool(new JedisPoolConfig(), "172.18.2.37", 7008);
 }
