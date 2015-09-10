@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.hewei.csdn.pojos.CsdnActivity;
 import com.hewei.csdn.pojos.CsdnActivityDetails;
 import com.hewei.csdn.site.CsdnSite;
+import org.apache.commons.lang.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
@@ -67,7 +68,16 @@ public class CsdnProcessor implements PageProcessor {
     private void activityDetails(Page page) {
 
         Selectable main = page.getHtml().xpath("//div[@class='main clearfix']");
+
+        if(StringUtils.isEmpty(main.get())){
+            return;
+        }
+
         Selectable head = main.xpath("//div[@class='act-head']/dl");
+
+        if(StringUtils.isEmpty(head.get())){
+            return;
+        }
 
         Html headHtml = Html.create(head.get().replace("dt>", "dd>"));
 
@@ -130,11 +140,6 @@ public class CsdnProcessor implements PageProcessor {
 
     }
 
-    public static void main(String[] args) {
-        String s="深圳会展中心（深圳市福田中心区福华三路深圳会展中心）   2016年04月08日 - 2016年04月10日";
-        System.out.println(s.split("    ").length);
-    }
-
     private void activityDeal(Page page) {
 
         List<String> activities = page.getHtml().xpath("//div[@class='item clearfix']").all();
@@ -189,6 +194,11 @@ public class CsdnProcessor implements PageProcessor {
             }
         }
         return true;
+    }
+
+    public static void main(String[] args) {
+        String s="深圳会展中心（深圳市福田中心区福华三路深圳会展中心）   2016年04月08日 - 2016年04月10日";
+        System.out.println(s.split("    ").length);
     }
 
     @Override
