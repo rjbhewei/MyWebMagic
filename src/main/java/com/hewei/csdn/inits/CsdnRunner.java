@@ -1,10 +1,10 @@
-package com.hewei.oschina.inits;
+package com.hewei.csdn.inits;
 
-import com.hewei.oschina.constants.OsChinaConstants;
-import com.hewei.oschina.pipeline.OsChinaPipeline;
-import com.hewei.oschina.processor.OsChinaProcessor;
-import com.hewei.common.utils.JedisUtils;
 import com.hewei.common.utils.EsUtils;
+import com.hewei.common.utils.JedisUtils;
+import com.hewei.csdn.constants.CsdnConstants;
+import com.hewei.csdn.pipeline.CsdnPipeline;
+import com.hewei.csdn.processor.CsdnProcessor;
 import com.hewei.spider.scheduler.JedisScheduler;
 import us.codecraft.webmagic.Spider;
 
@@ -19,20 +19,20 @@ import us.codecraft.webmagic.Spider;
  * @desc 
  *
  */
-public class OsChinaRunner {
+public class CsdnRunner {
 
     public static void start() {
-        EsUtils.createIndex(OsChinaConstants.ES_INDEX_NAME);
-        Spider spider = Spider.create(new OsChinaProcessor());
+        EsUtils.createIndex(CsdnConstants.ES_INDEX_NAME);
+        Spider spider = Spider.create(new CsdnProcessor());
         spider.addUrl(originalUrl());
         spider.setScheduler(new JedisScheduler(JedisUtils.newPool()));
         spider.setExitWhenComplete(false);
         spider.thread(1);
-        spider.addPipeline(new OsChinaPipeline());
+        spider.addPipeline(new CsdnPipeline());
         spider.run();
     }
 
     private static String[] originalUrl() {
-        return new String[]{OsChinaConstants.ORIGINAL_URL};
+        return new String[]{CsdnConstants.ORIGINAL_URL};
     }
 }

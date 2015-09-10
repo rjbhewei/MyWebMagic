@@ -1,8 +1,8 @@
-package com.hewei.oschina.utils;
+package com.hewei.common.utils;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-import static com.hewei.oschina.constants.OsChinaConstants.*;
+import static com.hewei.common.constants.CommonConstants.*;
 /**
  * 
  * @author hewei

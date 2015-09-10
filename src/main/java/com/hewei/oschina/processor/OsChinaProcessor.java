@@ -5,7 +5,7 @@ import com.hewei.oschina.constants.OsChinaConstants;
 import com.hewei.oschina.pojos.OsChinaActivity;
 import com.hewei.oschina.pojos.OsChinaActivityDetails;
 import com.hewei.oschina.pojos.OsChinaRootCity;
-import com.hewei.oschina.site.OsChinaSiteUtils;
+import com.hewei.oschina.site.OsChinaSite;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import us.codecraft.webmagic.Page;
@@ -161,12 +161,8 @@ public class OsChinaProcessor implements PageProcessor {
         page.addTargetRequests(Lists.newArrayList(set));
     }
 
-    private void originalHtmlDeal(Page page) {
-        page.putField(ORIGINAL_HTML, page.getHtml());
-    }
-
     @Override
     public Site getSite() {
-        return OsChinaSiteUtils.getOsChinaSite();
+        return OsChinaSite.getSite();
     }
 }
