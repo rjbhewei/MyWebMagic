@@ -39,6 +39,7 @@ public class CsdnProcessor implements PageProcessor {
 
         if(!url.startsWith(ORIGINAL_URL.substring(0,ORIGINAL_URL.lastIndexOf("/home")))){
             System.out.println("external csdn url:" + url);
+            return;
         }
 
         if (ORIGINAL_URL.equals(url)) {
