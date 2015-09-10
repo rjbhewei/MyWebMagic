@@ -154,8 +154,6 @@ public class CsdnProcessor implements PageProcessor {
 
             String url  = dis.xpath("//dt").links().get();
 
-            System.out.println("activityDeal url:"+url);
-
             String title  = dis.xpath("//dt/a/text()").get();
 
             String expense  = dis.xpath("//dd[1]/text()").get();
