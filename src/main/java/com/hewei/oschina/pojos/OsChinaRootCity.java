@@ -1,4 +1,7 @@
 package com.hewei.oschina.pojos;
+
+import com.hewei.common.pojos.BaseEsPojo;
+
 /**
  * 
  * @author hewei
@@ -10,7 +13,7 @@ package com.hewei.oschina.pojos;
  * @desc 
  *
  */
-public class OsChinaRootCity implements OsChinaPojo{
+public class OsChinaRootCity implements BaseEsPojo {
     private String name;
     private String url;
 

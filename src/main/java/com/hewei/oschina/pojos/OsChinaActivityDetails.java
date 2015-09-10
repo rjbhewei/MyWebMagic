@@ -1,4 +1,7 @@
 package com.hewei.oschina.pojos;
+
+import com.hewei.common.pojos.BaseEsPojo;
+
 /**
  * 
  * @author hewei
@@ -10,7 +13,7 @@ package com.hewei.oschina.pojos;
  * @desc 
  *
  */
-public class OsChinaActivityDetails implements OsChinaPojo{
+public class OsChinaActivityDetails implements BaseEsPojo {
     private String title;
     private String time;//时间
     private String location;//地址

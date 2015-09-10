@@ -1,4 +1,4 @@
-package com.hewei.oschina.pojos;
+package com.hewei.common.pojos;
 /**
  * 
  * @author hewei
@@ -10,5 +10,5 @@ package com.hewei.oschina.pojos;
  * @desc 
  *
  */
-public interface OsChinaPojo {
+public interface BaseEsPojo {
 }

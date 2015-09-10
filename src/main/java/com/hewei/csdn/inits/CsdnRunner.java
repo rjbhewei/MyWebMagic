@@ -1,5 +1,6 @@
 package com.hewei.csdn.inits;
 
+import com.hewei.common.utils.EsUtils;
 import com.hewei.common.utils.JedisUtils;
 import com.hewei.csdn.constants.CsdnConstants;
 import com.hewei.csdn.pipeline.CsdnPipeline;
@@ -21,7 +22,7 @@ import us.codecraft.webmagic.Spider;
 public class CsdnRunner {
 
     public static void start() {
-//        EsUtils.createIndex(CsdnConstants.ES_INDEX_NAME);
+        EsUtils.createIndex(CsdnConstants.ES_INDEX_NAME);
         Spider spider = Spider.create(new CsdnProcessor());
         spider.addUrl(originalUrl());
         spider.setScheduler(new JedisScheduler(JedisUtils.newPool()));
