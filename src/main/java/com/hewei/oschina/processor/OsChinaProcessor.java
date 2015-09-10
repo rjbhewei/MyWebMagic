@@ -49,7 +49,7 @@ public class OsChinaProcessor implements PageProcessor {
             return;
         }
 
-        if (activitySet.contains(page.getUrl().get())) {
+        if (activitySet.contains(url)) {
             activityDetails(page);
             return;
         }
