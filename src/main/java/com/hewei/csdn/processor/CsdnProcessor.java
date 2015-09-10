@@ -35,7 +35,10 @@ public class CsdnProcessor implements PageProcessor {
 
     @Override
     public void process(Page page) {
+
         String url = page.getUrl().get();
+
+        System.out.println("process---"+url);
 
         if(!url.startsWith(ORIGINAL_URL.substring(0,ORIGINAL_URL.lastIndexOf("/home")))){
             System.out.println("external csdn url:" + url);
