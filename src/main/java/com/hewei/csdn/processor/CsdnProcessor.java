@@ -62,18 +62,14 @@ public class CsdnProcessor implements PageProcessor {
 
     private void activityDetails(Page page) {
 
-        System.out.println("activityDetails url:"+page.getUrl());
-
         Selectable main = page.getHtml().xpath("//div[@class='main clearfix']");
         Selectable head = main.xpath("//div[@class='act-head']/dl");
 
         Html headHtml = Html.create(head.get().replace("dt>", "dd>"));
 
         String title = headHtml.xpath("//dd[1]/h2/text()").get();
-        System.out.println("title:" + title);
-        String dizhi = headHtml.xpath("//dd[2]/text()").get().trim();
-        System.out.println("dizhi:" + dizhi);
 
+        String dizhi = headHtml.xpath("//dd[2]/text()").get().trim();
 
         String[] addrTime = dizhi.split("  ");
 
@@ -82,21 +78,17 @@ public class CsdnProcessor implements PageProcessor {
         }
 
         String addr = addrTime.length == 2 ? addrTime[0] : dizhi;
-        System.out.println("addr:" + addr);
         String time = addrTime.length == 2 ? addrTime[1] : "";
-        System.out.println("time:" + time);
 
         Selectable tbody = main.xpath("//div[@class='main clearfix']/table/tbody");
+
         String signType = tbody.xpath("//tr/td[1]/text()").get();
 
-        System.out.println("signType:" + signType);
 
         String signStopTime = tbody.xpath("//tr/td[2]/text()").get();
-        System.out.println("SignstopTime:" + signStopTime);
 
         String content = main.xpath("//div[@class='intro dec']").get();
 
-        System.out.println("content:" + content);
 
 //        Selectable addrTime= main.xpath("//div[@class='addr-time']");
 //
