@@ -53,6 +53,7 @@ public class CsdnProcessor implements PageProcessor {
         }
 
         if (urlSet.contains(url)) {
+            pagesDeal(page);
             activityDeal(page);
             return;
         }
