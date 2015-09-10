@@ -126,10 +126,6 @@ public class CsdnProcessor implements PageProcessor {
                 continue;
             }
 
-            if (pageUrlSet.size() > 0) {
-                continue;
-            }
-
             String newUrl = ORIGINAL_URL + "?&page=" + message;
             System.out.println("newUrl:" + newUrl);
             pageUrlSet.add(newUrl);
