@@ -34,7 +34,7 @@ public class IpProxyGenerator {
 
     public static void ipSelectorStart() {
         for (int i = 0; i < IpProxyConstants.IPSELECTOR_THREAD; i++) {
-            new IpSelector().start();
+            new IpSelector2().start();
         }
         logger.info("IpSelector start");
     }
